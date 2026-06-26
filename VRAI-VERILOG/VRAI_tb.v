@@ -121,6 +121,11 @@ always @(posedge CLK) begin
     $display("PROGRAM SUCCESS");
     $finish;
     end
+    //easier way read output values
+    if ((DEVICES_STRW) && (MEM_ADDR_OUT == 16'h8012)) begin 
+        $display("OUT: %x\n", MEM_DATA_OUT);
+    end
+
 end
 
 
