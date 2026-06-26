@@ -104,6 +104,95 @@ end
 endmodule
 
 
+
+
+
+
+module MAIN_SYNC_MEM (
+    input wire CLK,
+
+    input wire [15:0] ADDR,
+    input wire [15:0] DATA_IN,
+    input wire STRH,
+    input wire STRW,
+    input wire LDH,
+    input wire LDW,
+
+    output reg [15:0] DATA_OUT
+);
+
+
+
+reg [7:0] MEM [0:32767];
+
+initial begin
+    $readmemh("mem_init.hex", MEM);
+end
+
+always @(posedge CLK) begin
+    DATA_OUT <= 16'h0000;
+    if (STRH) begin
+        MEM[ADDR] <= DATA_IN[7:0];
+    end
+    else if (STRW && (ADDR < 16'h7FFF)) begin
+        MEM[ADDR] <= DATA_IN[15:8];
+        MEM[ADDR+1] <= DATA_IN[7:0];
+    end
+    else if (LDH) begin
+        DATA_OUT <= {8'h00, MEM[ADDR]};
+    end
+    else if (LDW && (ADDR < 16'h7FFF)) begin
+        DATA_OUT <= {MEM[ADDR], MEM[ADDR+1]};
+    end
+end
+
+endmodule
+
+
+module DEVICE_SYNC_MEM (
+    input wire CLK,
+
+    input wire [15:0] ADDR,
+    input wire [15:0] DATA_IN,
+    input wire STRH,
+    input wire STRW,
+    input wire LDH,
+    input wire LDW,
+
+    output reg [15:0] DATA_OUT
+);
+
+
+
+reg [7:0] MEM [0:32767];
+
+initial begin
+    $readmemh("mem_device_init.hex", MEM);
+end
+
+always @(posedge CLK) begin
+    DATA_OUT <= 16'h0000;
+    if (STRH) begin
+        MEM[ADDR] <= DATA_IN[7:0];
+    end
+    else if (STRW && (ADDR < 16'h7FFF)) begin
+        MEM[ADDR] <= DATA_IN[15:8];
+        MEM[ADDR+1] <= DATA_IN[7:0];
+    end
+    else if (LDH) begin
+        DATA_OUT <= {8'h00, MEM[ADDR]};
+    end
+    else if (LDW && (ADDR < 16'h7FFF)) begin
+        DATA_OUT <= {MEM[ADDR], MEM[ADDR+1]};
+    end
+end
+
+endmodule
+
+
+
+
+
 module UNIT_MEM (
     input wire [15:0] BASE_ADDR,
     input wire [15:0] OFFSET,
