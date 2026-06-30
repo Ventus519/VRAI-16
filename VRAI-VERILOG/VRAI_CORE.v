@@ -1,5 +1,3 @@
-//this file is still a work in progress
-
 `include "VRAI-VERILOG/COUNTER.v"
 
 `include "VRAI-VERILOG/UNIT_DECODER.v"
