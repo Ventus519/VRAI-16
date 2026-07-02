@@ -39,13 +39,6 @@ SYNC_INSTR_MEM sync_instr_mem (
     .INSTR_STREAM(INSTR_STREAM)  
 );
 
-
-reg [3:0] REQUESTED_TEST_REG;
-
-wire [15:0] TEST_ZR;
-wire [15:0] TEST_COND;
-wire [15:0] TEST_REG;
-
 wire MAIN_STRH;
 wire MAIN_STRW;
 wire MAIN_LDH;
@@ -58,9 +51,9 @@ wire DEVICES_LDW;
 
 wire INVALID_MEM;
 
-wire [15:0] MEM_DATA_OUT;
-wire [15:0] MEM_ADDR_OUT;
-wire [15:0] MEM_DATA_IN;
+wire [15:0] MEM_STR_DATA;
+wire [15:0] MEM_ADDR;
+wire [15:0] MEM_LD_DATA;
 
 wire HALT;
 
@@ -68,16 +61,10 @@ wire HALT;
 VRAI_SYNC_CORE vrai_sync_core (
     .CLK(CLK),
     .RESET(RESET),
-
+    
     .INSTR_STREAM(INSTR_STREAM),
     .INSTR_ADDR(INSTR_ADDR),
-
-    .REQUESTED_TEST_REG(REQUESTED_TEST_REG),
-
-    .TEST_ZR(TEST_ZR),
-    .TEST_COND(TEST_COND),
-    .TEST_VAR_REG(TEST_REG),
-
+    
     .MAIN_STRH(MAIN_STRH),
     .MAIN_STRW(MAIN_STRW),
     .MAIN_LDH(MAIN_LDH),
@@ -88,12 +75,10 @@ VRAI_SYNC_CORE vrai_sync_core (
     .DEVICES_LDH(DEVICES_LDH),
     .DEVICES_LDW(DEVICES_LDW),
 
-    .INVALID_MEM(INVALID_MEM),
-
-    .MEM_DATA_OUT(MEM_DATA_OUT),
-    .MEM_ADDR_OUT(MEM_ADDR_OUT),
-    .MEM_DATA_IN(MEM_DATA_IN),
-
+    .MEM_STR_DATA(MEM_STR_DATA),
+    .MEM_ADDR(MEM_ADDR),
+    .MEM_LD_DATA(MEM_LD_DATA),
+    
     .EX_HALT(HALT)
 );
 
@@ -106,8 +91,8 @@ SYNC_INSTR_MEM instr_mem (
 wire [15:0] MAIN_MEM_RESULT;
 MAIN_SYNC_MEM main_sync_mem (
     .CLK(CLK),
-    .ADDR({1'b0, MEM_ADDR_OUT[14:0]}),
-    .DATA_IN(MEM_DATA_OUT),
+    .ADDR({1'b0, MEM_ADDR[14:0]}),
+    .DATA_IN(MEM_STR_DATA),
     .STRH(MAIN_STRH),
     .STRW(MAIN_STRW),
     .LDH(MAIN_LDH),
@@ -120,8 +105,8 @@ MAIN_SYNC_MEM main_sync_mem (
 wire [15:0] DEVICES_MEM_RESULT;
 DEVICE_SYNC_MEM device_sync_mem (
     .CLK(CLK),
-    .ADDR({1'b0, MEM_ADDR_OUT[14:0]}),
-    .DATA_IN(MEM_DATA_OUT),
+    .ADDR({1'b0, MEM_ADDR[14:0]}),
+    .DATA_IN(MEM_STR_DATA),
     .STRH(DEVICES_STRH),
     .STRW(DEVICES_STRW),
     .LDH(DEVICES_LDH),
@@ -132,8 +117,9 @@ DEVICE_SYNC_MEM device_sync_mem (
 
 wire [15:0] MEM_RESULT;
 assign MEM_RESULT = MAIN_MEM_RESULT | DEVICES_MEM_RESULT;
-assign MEM_DATA_IN = MEM_RESULT;
+assign MEM_LD_DATA = MEM_RESULT;
 integer tick = 0;
+integer count = 0;
 
 always @(posedge CLK) begin
     tick = tick + 1;
@@ -145,8 +131,13 @@ always @(posedge CLK) begin
         $display("PROGRAM SUCCESS");
         $finish;
     end
-    if (DEVICES_STRW && (MEM_ADDR_OUT == 16'h8012)) begin
-        $display("STREAMING %x to OUT\n", MEM_DATA_OUT);
+
+    if (count != 0) begin
+        count = (count + 1)%6;
+    end
+    else if (DEVICES_STRW && (MEM_ADDR == 16'h8012)) begin
+        count = 1;
+        $display("STREAMING %x to OUT\n", MEM_STR_DATA);
     end
 end
 
@@ -157,10 +148,30 @@ initial begin
     $dumpvars(0, VRAI_sync_tb);
     CLK = 0;
     RESET = 1;
-    REQUESTED_TEST_REG = 4'hA;
 
     #12;
     RESET = 0;
 end
 
 endmodule
+
+
+
+/*
+4494
+a3b2
+7879
+82e0
+85bd
+36f8
+5c05
+5e02
+0918
+360a
+ab15
+6145
+26cc
+19ab
+e116
+ee21
+*/

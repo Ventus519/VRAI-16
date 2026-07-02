@@ -6,7 +6,7 @@ module INSTR_MEM (
     output wire [31:0] INSTR_STREAM
 );
 
-reg [31:0] MEM_INSTR [0:38];
+reg [31:0] MEM_INSTR [0:16383];
 
 initial begin
     $readmemh("program.hex", MEM_INSTR);
