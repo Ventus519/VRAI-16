@@ -1,6 +1,3 @@
-`include "VRAI-VERILOG/CLZ.v"
-`include "VRAI-VERILOG/CTZ.v"
-`include "VRAI-VERILOG/POPCNT.v"
 
 module UNIT_BIT (
     input wire [15:0] A,

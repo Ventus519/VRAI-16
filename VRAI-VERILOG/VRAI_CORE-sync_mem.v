@@ -1,17 +1,3 @@
-//this file is still a work in progress
-
-`include "VRAI-VERILOG/COUNTER.v"
-
-`include "VRAI-VERILOG/UNIT_DECODER.v"
-`include "VRAI-VERILOG/UNIT_ALU.v"
-`include "VRAI-VERILOG/UNIT_BIT.v"
-`include "VRAI-VERILOG/UNIT_JMP.v"
-`include "VRAI-VERILOG/UNIT_MEM.v"
-`include "VRAI-VERILOG/UNIT_SYS.v"
-
-
-`include "VRAI-VERILOG/SWITCH.v"
-`include "VRAI-VERILOG/INSTR_DECODER.v"
 
 module VRAI_SYNC_CORE (
     input wire CLK,

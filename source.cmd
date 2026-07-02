@@ -1,0 +1,32 @@
+//Main testbench
+VRAI-VERILOG/tb/VRAI_sync-mem_tb.v
+
+//Main Core
+VRAI-VERILOG/VRAI_CORE-sync_mem.v
+// VRAI-VERILOG/VRAI_CORE.v
+VRAI-VERILOG/COUNTER.v
+
+//Instruction Decoding
+VRAI-VERILOG/decode/INSTR_DECODER.v
+VRAI-VERILOG/decode/UNIT_DECODER.v
+
+//Units
+VRAI-VERILOG/unit/SWITCH.v
+
+//UNIT 0: SYS
+VRAI-VERILOG/unit/sys/UNIT_SYS.v
+
+//UNIT 1: ALU
+VRAI-VERILOG/unit/alu/UNIT_ALU.v
+
+//UNIT 2: MEM
+VRAI-VERILOG/unit/mem/UNIT_MEM.v
+
+//UNIT 3: JMP
+VRAI-VERILOG/unit/jmp/UNIT_JMP.v
+
+//UNIT 4: BIT
+VRAI-VERILOG/unit/bit/UNIT_BIT.v
+VRAI-VERILOG/unit/bit/CLZ.v
+VRAI-VERILOG/unit/bit/CTZ.v
+VRAI-VERILOG/unit/bit/POPCNT.v

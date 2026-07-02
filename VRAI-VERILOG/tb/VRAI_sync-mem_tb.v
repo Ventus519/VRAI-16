@@ -1,7 +1,6 @@
 //This file is still in progress, nowhere near done
 
 `timescale 1ps/1ps
-`include "VRAI-VERILOG/VRAI_CORE-sync_mem.v"
 module SYNC_INSTR_MEM (
   input wire CLK,
 
@@ -144,7 +143,7 @@ end
 
 //no progress made on this portion
 initial begin
-    $dumpfile("VRAI_SYNC_TEST.vcd");
+    $dumpfile("build/VRAI_SYNC_TEST.vcd");
     $dumpvars(0, VRAI_sync_tb);
     CLK = 0;
     RESET = 1;
