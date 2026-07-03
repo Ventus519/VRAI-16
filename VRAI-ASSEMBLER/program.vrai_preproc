@@ -1,0 +1,80 @@
+const enable = q1
+const out = 0x8012
+const out_ctrl = 0x8010
+const in = 0x8002
+const in_ctrl = 0x8000
+const data_cnt = q2
+const cnt = q3
+const A = q8
+const B = q9
+const temp = q10
+addi enable, zr, 0x0001
+addi data_cnt, zr, 0x0020
+jmp SORT_INIT
+OUT:
+str_w [zr+out], temp
+
+str_h [zr+out_ctrl], enable
+
+str_h [zr+out_ctrl], zr
+
+ld_w COND, [sp+0x8000]
+addi sp, sp, 2
+jmpr COND
+SORT_INIT:
+addi cnt, zr, 0
+SORT:
+cmpi cnt, 0x001E
+
+je STREAM_OUT
+
+ld_w A, [cnt+0x0000]
+
+ld_w B, [cnt+0x0002]
+
+cmp A, B
+
+jle RESTORE
+
+jg SWAP
+
+SWAP:
+addi temp, B, 0
+addi B, A, 0
+addi A, temp, 0
+str_w [cnt+0x0002], B
+
+str_w [cnt+0x0000], A
+
+addi cnt, zr, 0
+jmp SORT
+
+RESTORE:
+str_w [cnt+0x0002], B
+
+str_w [cnt+0x0000], A
+
+addi cnt, cnt, 0x0002
+
+jmp SORT
+
+STREAM_OUT:
+addi cnt, zr, 0
+PRINT:
+cmpi cnt, 0x0020
+
+je END
+
+ld_w temp, [cnt+0x0000]
+
+count [+16] COND
+subi sp, sp, 2
+str_w [sp+0x8000], COND
+jmp OUT
+addi cnt, cnt, 0x0002
+
+jmp PRINT
+
+END:
+HALT
+
