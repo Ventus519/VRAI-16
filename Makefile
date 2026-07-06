@@ -21,3 +21,11 @@ run: compile
 .PHONY: wave
 wave: run
 	gtkwave build/VRAI_SYNC_TEST.vcd
+
+.PHONY: assemble
+assemble:
+	gcc -o VRAIa VRAI-ASSEMBLER/main.c \
+				 VRAI-ASSEMBLER/Assembler.c VRAI-ASSEMBLER/Assembler.h \
+				 VRAI-ASSEMBLER/field_definitions_vrai.h \
+				 VRAI-ASSEMBLER/processing/AsciiTree.c VRAI-ASSEMBLER/processing/AsciiTree.h \
+				 VRAI-ASSEMBLER/processing/instructs/Instructions.c VRAI-ASSEMBLER/processing/instructs/Instructions.h
