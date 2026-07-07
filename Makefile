@@ -22,8 +22,8 @@ run: compile
 wave: run
 	gtkwave build/VRAI_SYNC_TEST.vcd
 
-.PHONY: assemble
-assemble:
+.PHONY: assembler
+assembler:
 	gcc -o VRAIa VRAI-ASSEMBLER/main.c \
 				 VRAI-ASSEMBLER/Assembler.c VRAI-ASSEMBLER/Assembler.h \
 				 VRAI-ASSEMBLER/field_definitions_vrai.h \

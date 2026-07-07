@@ -3,16 +3,26 @@ const out = 0x8012
 const out_ctrl = 0x8010
 const in = 0x8002
 const in_ctrl = 0x8000
-const data_cnt = q2
-const cnt = q3
-const A = q8
-const B = q9
-const temp = q10
+const io = q13
+const disk_nr = q8
+const source = q9
+const dest = q10
+const spare = q11
+const temp = q5
 addi enable, zr, 0x0001
-addi data_cnt, zr, 0x0020
-jmp SORT_INIT
+jmp START
+IN:
+str_h [zr+in_ctrl], enable
+
+ld_w io, [zr+in]
+
+str_h [zr+in_ctrl], zr
+
+ld_w COND, [sp+0x8000]
+addi sp, sp, 2
+jmpr COND
 OUT:
-str_w [zr+out], temp
+str_w [zr+out], io
 
 str_h [zr+out_ctrl], enable
 
@@ -21,60 +31,118 @@ str_h [zr+out_ctrl], zr
 ld_w COND, [sp+0x8000]
 addi sp, sp, 2
 jmpr COND
-SORT_INIT:
-addi cnt, zr, 0
-SORT:
-cmpi cnt, 0x001E
+START:
+count [+16] COND
+subi sp, sp, 2
+str_w [sp+0x8000], COND
+jmp IN
+addi disk_nr, io, 0
+count [+16] COND
+subi sp, sp, 2
+str_w [sp+0x8000], COND
+jmp IN
+addi source, io, 0
+count [+16] COND
+subi sp, sp, 2
+str_w [sp+0x8000], COND
+jmp IN
+addi dest, io, 0
+count [+16] COND
+subi sp, sp, 2
+str_w [sp+0x8000], COND
+jmp IN
+addi spare, io, 0
+count [+16] COND
+subi sp, sp, 2
+str_w [sp+0x8000], COND
+jmp MOVE
+HALT
 
-je STREAM_OUT
+MOVE:
+subi sp, sp, 2
+str_w [sp+0x8000], spare
+subi sp, sp, 2
+str_w [sp+0x8000], dest
+subi sp, sp, 2
+str_w [sp+0x8000], source
+subi sp, sp, 2
+str_w [sp+0x8000], disk_nr
+subi sp, sp, 2
+str_w [sp+0x8000], temp
+cmpi disk_nr, 0x0000
 
-ld_w A, [cnt+0x0000]
+jne SETUP
 
-ld_w B, [cnt+0x0002]
-
-cmp A, B
-
-jle RESTORE
-
-jg SWAP
-
-SWAP:
-addi temp, B, 0
-addi B, A, 0
-addi A, temp, 0
-str_w [cnt+0x0002], B
-
-str_w [cnt+0x0000], A
-
-addi cnt, zr, 0
-jmp SORT
-
-RESTORE:
-str_w [cnt+0x0002], B
-
-str_w [cnt+0x0000], A
-
-addi cnt, cnt, 0x0002
-
-jmp SORT
-
-STREAM_OUT:
-addi cnt, zr, 0
-PRINT:
-cmpi cnt, 0x0020
-
-je END
-
-ld_w temp, [cnt+0x0000]
-
+addi io, source, 0
 count [+16] COND
 subi sp, sp, 2
 str_w [sp+0x8000], COND
 jmp OUT
-addi cnt, cnt, 0x0002
+addi io, zr, 0x0005
+count [+16] COND
+subi sp, sp, 2
+str_w [sp+0x8000], COND
+jmp OUT
+addi io, dest, 0
+count [+16] COND
+subi sp, sp, 2
+str_w [sp+0x8000], COND
+jmp OUT
+addi io, zr, 0x0005
+count [+16] COND
+subi sp, sp, 2
+str_w [sp+0x8000], COND
+jmp OUT
+jmp CLEANUP
 
-jmp PRINT
+SETUP:
+subi disk_nr, disk_nr, 0x0001
 
-END:
-HALT
-
+addi temp, spare, 0
+addi spare, dest, 0
+addi dest, temp, 0
+count [+16] COND
+subi sp, sp, 2
+str_w [sp+0x8000], COND
+jmp MOVE
+addi io, source, 0
+count [+16] COND
+subi sp, sp, 2
+str_w [sp+0x8000], COND
+jmp OUT
+addi io, zr, 0x0005
+count [+16] COND
+subi sp, sp, 2
+str_w [sp+0x8000], COND
+jmp OUT
+addi io, spare, 0
+count [+16] COND
+subi sp, sp, 2
+str_w [sp+0x8000], COND
+jmp OUT
+addi io, zr, 0x0005
+count [+16] COND
+subi sp, sp, 2
+str_w [sp+0x8000], COND
+jmp OUT
+addi dest, spare, 0
+addi spare, source, 0
+addi source, temp, 0
+count [+16] COND
+subi sp, sp, 2
+str_w [sp+0x8000], COND
+jmp MOVE
+CLEANUP:
+ld_w temp, [sp+0x8000]
+addi sp, sp, 2
+ld_w disk_nr, [sp+0x8000]
+addi sp, sp, 2
+ld_w source, [sp+0x8000]
+addi sp, sp, 2
+ld_w dest, [sp+0x8000]
+addi sp, sp, 2
+ld_w spare, [sp+0x8000]
+addi sp, sp, 2
+ld_w COND, [sp+0x8000]
+addi sp, sp, 2
+jmpr COND

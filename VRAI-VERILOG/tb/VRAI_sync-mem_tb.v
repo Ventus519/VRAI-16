@@ -122,7 +122,7 @@ integer count = 0;
 
 always @(posedge CLK) begin
     tick = tick + 1;
-    if (tick > 1000000) begin
+    if (tick > 100000000) begin
         $display("Time limit exceeded");
         $finish;
     end

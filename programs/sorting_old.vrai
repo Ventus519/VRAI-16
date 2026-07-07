@@ -14,14 +14,9 @@ const temp = q10
 ;initializing values
 addi enable, zr, 0x0001
 addi data_cnt, zr, 0x0020
-mov cnt, zr
-jmp READ
+;mov cnt, zr
+jmp SORT_INIT
 
-IN:
-	str_h [zr+in_ctrl], enable
-	ld_w temp, [zr+in]
-	str_h [zr+in_ctrl], zr
-	ret
 
 OUT:
 	str_w [zr+out], temp
@@ -29,13 +24,6 @@ OUT:
 	str_h [zr+out_ctrl], zr
 	ret
 
-READ: 
-	cmpi cnt, 0x0020
-	je SORT_INIT
-	call IN
-	str_w [cnt+0], temp
-	addi cnt, cnt, 0x0002
-	jmp READ
 
 SORT_INIT:
 	mov cnt, zr
@@ -43,10 +31,10 @@ SORT_INIT:
 SORT:
 	cmpi cnt, 0x001E
 	je STREAM_OUT
-	
+
 	ld_w A, [cnt+0x0000]
 	ld_w B, [cnt+0x0002]
-	
+
 	cmp A, B
 	jle RESTORE
 	jg SWAP
@@ -54,22 +42,22 @@ SWAP:
 	mov temp, B
 	mov B, A
 	mov A, temp
-	
+
 	str_w [cnt+0x0002], B
 	str_w [cnt+0x0000], A
 	mov cnt, zr
 	jmp SORT
-	
-	
+
+
 RESTORE:
 	str_w [cnt+0x0002], B
 	str_w [cnt+0x0000], A
 	addi cnt, cnt, 0x0002
 	jmp SORT
-	
+
 STREAM_OUT:
 	mov cnt, zr
-	
+
 PRINT:
 	cmpi cnt, 0x0020
 	je END
@@ -77,7 +65,7 @@ PRINT:
 	call OUT
 	addi cnt, cnt, 0x0002
 	jmp PRINT
-	
+
 END:
 	HALT
 

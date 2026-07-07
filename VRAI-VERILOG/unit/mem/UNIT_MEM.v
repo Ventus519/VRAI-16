@@ -126,7 +126,7 @@ module MAIN_SYNC_MEM (
 reg [7:0] MEM [0:32767];
 
 initial begin
-    $readmemh("mem_init.hex", MEM);
+    $readmemh("memories/mem_init.hex", MEM);
 end
 
 always @(posedge CLK) begin
@@ -161,28 +161,60 @@ module DEVICE_SYNC_MEM (
 
     output reg [15:0] DATA_OUT
 );
+/*
 
+    STD::IN - 0x8000 ~ 0x800F
+    STD::OUT - 0x8010 ~ 0x801F
 
+*/
+
+localparam STD_IN_DATA_ADDR = 16'h0002,
+           STD_IN_EN_ADDR = 16'h0000;
+
+reg [16:0] STD_IN_INDEX;
 
 reg [7:0] MEM [0:32767];
 
+reg READ_STD_IN;
+
+reg [16:0] STD_IN [0:32767];
+
 initial begin
-    $readmemh("mem_device_init.hex", MEM);
+    $readmemh("memories/mem_device_init.hex", MEM);
+    $readmemh("memories/input.hex", STD_IN);
+    STD_IN_INDEX <= 16'h0000;
+    READ_STD_IN <= 0;
 end
 
 always @(posedge CLK) begin
     DATA_OUT <= 16'h0000;
     if (STRH) begin
         MEM[ADDR] <= DATA_IN[7:0];
+        if ((ADDR == STD_IN_EN_ADDR) && (DATA_IN != 8'h00)) begin
+
+            if (~READ_STD_IN) begin
+                MEM[STD_IN_DATA_ADDR] <= STD_IN[STD_IN_INDEX][15:8];
+                MEM[STD_IN_DATA_ADDR+1] <= STD_IN[STD_IN_INDEX][7:0];
+                STD_IN_INDEX <= STD_IN_INDEX + 1;
+                READ_STD_IN <= 1;
+            end
+
+        end
+        else begin
+            READ_STD_IN <= 0;
+        end
     end
     else if (STRW && (ADDR < 16'h7FFF)) begin
+        READ_STD_IN <= 0;
         MEM[ADDR] <= DATA_IN[15:8];
         MEM[ADDR+1] <= DATA_IN[7:0];
     end
     else if (LDH) begin
+        READ_STD_IN <= 0;
         DATA_OUT <= {8'h00, MEM[ADDR]};
     end
     else if (LDW && (ADDR < 16'h7FFF)) begin
+        READ_STD_IN <= 0;
         DATA_OUT <= {MEM[ADDR], MEM[ADDR+1]};
     end
 end

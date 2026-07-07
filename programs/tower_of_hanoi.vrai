@@ -1,0 +1,101 @@
+const enable = q1
+const out = 0x8012
+const out_ctrl = 0x8010
+const in = 0x8002
+const in_ctrl = 0x8000
+
+const io = q13
+
+const disk_nr = q8
+const source = q9
+const dest = q10
+const spare = q11
+
+const temp = q5
+
+addi enable, zr, 0x0001
+
+;out 0x00 --> crane goes to 0
+;out 0x01 --> crane goes to 1
+;out 0x02 --> crane goes to 2
+	
+;out 0x05 --> magnet on/off toggle
+jmp START
+
+IN:
+	str_h [zr+in_ctrl], enable
+	ld_w io, [zr+in]
+	str_h [zr+in_ctrl], zr
+	ret
+
+OUT:
+	str_w [zr+out], io
+	str_h [zr+out_ctrl], enable
+	str_h [zr+out_ctrl], zr
+	ret
+
+
+START:
+	call IN
+	mov disk_nr, io
+	call IN
+	mov source, io
+	call IN
+	mov dest, io
+	call IN
+	mov spare, io
+	call MOVE
+	HALT
+	
+MOVE:
+	push spare
+	push dest
+	push source
+	push disk_nr
+	push temp
+	
+	cmpi disk_nr, 0x0000
+	jne SETUP
+	
+	mov io, source
+	call OUT
+	movi io, 0x0005
+	call OUT
+	mov io, dest
+	call OUT
+	movi io, 0x0005
+	call OUT
+	
+	jmp CLEANUP
+
+SETUP:
+	subi disk_nr, disk_nr, 0x0001
+	mov temp, spare
+	mov spare, dest
+	mov dest, temp
+	call MOVE
+	
+	mov io, source
+	call OUT
+	movi io, 0x0005
+	call OUT
+	mov io, spare
+	call OUT
+	movi io, 0x0005
+	call OUT
+	
+	mov dest, spare
+	mov spare, source
+	mov source, temp
+	call MOVE
+	
+	
+	
+CLEANUP:	
+	pop temp
+	pop disk_nr
+	pop source
+	pop dest
+	pop spare
+	ret
+	
