@@ -33,7 +33,7 @@ module BASIC_MEM(
 reg [7:0] MEM [0:32767];
 
 initial begin
-    $readmemh("mem_init.hex", MEM);
+    $readmemh("memories/mem_init.hex", MEM);
 end
 
 always @(*) begin
@@ -77,7 +77,7 @@ module BASIC_DEV_MEM(
 reg [7:0] MEM [0:32767];
 
 initial begin
-    $readmemh("mem_device_init.hex", MEM);
+    $readmemh("memories/mem_device_init.hex", MEM);
 end
 
 always @(*) begin

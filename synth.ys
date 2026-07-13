@@ -1,0 +1,28 @@
+read_verilog VRAI-VERILOG/VRAI_CORE-sync_mem.v
+read_verilog VRAI-VERILOG/COUNTER.v
+
+read_verilog VRAI-VERILOG/decode/INSTR_DECODER.v
+read_verilog VRAI-VERILOG/decode/UNIT_DECODER.v
+
+read_verilog VRAI-VERILOG/unit/SWITCH.v
+
+read_verilog VRAI-VERILOG/unit/alu/UNIT_ALU.v
+
+read_verilog VRAI-VERILOG/unit/bit/CTZ.v
+read_verilog VRAI-VERILOG/unit/bit/CLZ.v
+read_verilog VRAI-VERILOG/unit/bit/POPCNT.v
+read_verilog VRAI-VERILOG/unit/bit/UNIT_BIT.v
+
+read_verilog VRAI-VERILOG/unit/jmp/UNIT_JMP.v
+
+read_verilog VRAI-VERILOG/unit/mem/UNIT_MEM.v
+
+read_verilog VRAI-VERILOG/unit/sys/UNIT_SYS.v
+
+hierarchy -top VRAI_SYNC_CORE
+
+memory; opt
+
+techmap;
+
+show VRAI_SYNC_CORE
