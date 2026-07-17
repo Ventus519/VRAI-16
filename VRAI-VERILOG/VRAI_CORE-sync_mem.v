@@ -508,14 +508,7 @@ always @(posedge CLK) begin
         RESULT_MEM_EN <= 0;
         RESULT_BIT_EN <= 0;
         
-    end
-end
-
-//Normal Execution
-always @(posedge CLK) begin
-
-    if (!RESET) begin
-        //Assumes Synchronous Memory Access
+    end else begin
         case (STATE)
             STATE_COUNTER_UPDATE: begin
                 STALL_EX <= 1;
@@ -590,20 +583,10 @@ always @(posedge CLK) begin
                 INSTR <= INSTR_NOP;
             end
         endcase
-
-
-        /* //Assumes Combinational Memory access
-        if (WRITE_DEST) begin
-            REG_FILE[DEST] <= RESULT;
-        end
-
-        if (SYS_HALT) begin
-            HALT_EX <= 1;
-        end
-        */
     end
 end
 
+//Normal Execution
 
 
 

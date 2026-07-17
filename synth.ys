@@ -21,8 +21,28 @@ read_verilog VRAI-VERILOG/unit/sys/UNIT_SYS.v
 
 hierarchy -top VRAI_SYNC_CORE
 
+
+
 memory; opt
 
-techmap;
+techmap; 
+
+proc; opt;
+
+
+dfflibmap -liberty /home/Ven/.volare/sky130B/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_100C_1v80.lib
+
+
+abc -liberty /home/Ven/.volare/sky130B/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_100C_1v80.lib
+
+stat; sta;
+
+
+
+
+#$PDK_ROOT/sky130B/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+#$PDK_ROOT\/sky130B/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+
 
 show VRAI_SYNC_CORE
