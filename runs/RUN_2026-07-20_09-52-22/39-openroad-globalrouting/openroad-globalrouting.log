@@ -1,0 +1,84 @@
+Reading timing models for corner nom_tt_025C_1v80…
+Reading timing library for the 'nom_tt_025C_1v80' corner at '/root/.ciel/ciel/sky130/versions/8afc8346a57fe1ab7934ba5a6056ea8b43078e71/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib'…
+Reading OpenROAD database at '/home/Ven/vscode/VRAI/runs/RUN_2026-07-20_09-52-22/37-openroad-resizertimingpostcts/VRAI_SYNC_CORE.odb'…
+Reading design constraints file at '/nix/store/bsc7517ifhyy0s2y84n52j5yvqsybbw9-python3-3.13.9-env/lib/python3.13/site-packages/librelane/scripts/base.sdc'…
+[INFO] Using clock CLK…
+[INFO] Setting output delay to: 4
+[INFO] Setting input delay to: 4
+[INFO] Setting load to: 0.033442
+[INFO] Setting clock uncertainty to: 0.25
+[INFO] Setting clock transition to: 0.1499999999999999944488848768742172978818416595458984375
+[INFO] Setting timing derate to: 5%
+[INFO] Setting signal min routing layer to: met1 and clock min routing layer to met1. 
+[INFO] Setting signal max routing layer to: met5 and clock max routing layer to met5. 
++ global_route -congestion_iterations 50 -verbose
+[INFO GRT-0020] Min routing layer: met1
+[INFO GRT-0021] Max routing layer: met5
+[INFO GRT-0022] Global adjustment: 30%
+[INFO GRT-0023] Grid origin: (0, 0)
+[INFO GRT-0088] Layer li1     Track-Pitch = 0.4600  line-2-Via Pitch: 0.3400
+[INFO GRT-0088] Layer met1    Track-Pitch = 0.3400  line-2-Via Pitch: 0.3400
+[INFO GRT-0088] Layer met2    Track-Pitch = 0.4600  line-2-Via Pitch: 0.3500
+[INFO GRT-0088] Layer met3    Track-Pitch = 0.6800  line-2-Via Pitch: 0.6150
+[INFO GRT-0088] Layer met4    Track-Pitch = 0.9200  line-2-Via Pitch: 1.0400
+[INFO GRT-0088] Layer met5    Track-Pitch = 3.4000  line-2-Via Pitch: 3.1100
+[INFO GRT-0003] Macros: 0
+[INFO GRT-0004] Blockages: 8758
+[INFO GRT-0019] Found 51 clock nets.
+[INFO GRT-0001] Minimum degree: 2
+[INFO GRT-0002] Maximum degree: 13
+
+[INFO GRT-0053] Routing resources analysis:
+          Routing      Original      Derated      Resource
+Layer     Direction    Resources     Resources    Reduction (%)
+---------------------------------------------------------------
+li1        Vertical            0             0          0.00%
+met1       Horizontal      20149         13448          33.26%
+met2       Vertical        22013         14638          33.50%
+met3       Horizontal      14898         10211          31.46%
+met4       Vertical        10968          6597          39.85%
+met5       Horizontal       2812          1443          48.68%
+---------------------------------------------------------------
+
+[INFO GRT-0101] Running extra iterations to remove overflow.
+[INFO GRT-0102] Start extra iteration 1/50
+[INFO GRT-0102] Start extra iteration 2/50
+[INFO GRT-0102] Start extra iteration 3/50
+[INFO GRT-0102] Start extra iteration 4/50
+[INFO GRT-0197] Via related to pin nodes: 24238
+[INFO GRT-0198] Via related Steiner nodes: 695
+[INFO GRT-0199] Via filling finished.
+[INFO GRT-0111] Final number of vias: 31689
+[INFO GRT-0112] Final usage 3D: 116832
+
+[INFO GRT-0096] Final congestion report:
+Layer         Resource        Demand        Usage (%)    Max H / Max V / Total Overflow
+---------------------------------------------------------------------------------------
+li1                  0             0            0.00%             0 /  0 /  0
+met1             13448          7821           58.16%             0 /  0 /  0
+met2             14638          8995           61.45%             0 /  0 /  0
+met3             10211          3343           32.74%             0 /  0 /  0
+met4              6597          1461           22.15%             0 /  0 /  0
+met5              1443           145           10.05%             0 /  0 /  0
+---------------------------------------------------------------------------------------
+Total            46337         21765           46.97%             0 /  0 /  0
+
+[INFO GRT-0018] Total wirelength: 222538 um
+[INFO GRT-0014] Routed nets: 3788
+[INFO GRT-0303] Global routing runtime = 00:00:00
+Setting global connections for newly added cells…
+[INFO] Setting global connections...
+[INFO ODB-0403] 0 connections made, 0 conflicts skipped.
+Updating metrics…
+Cell type report:                       Count       Area
+  Fill cell                               188     705.68
+  Tap cell                                912    1141.09
+  Clock buffer                             67     998.46
+  Timing Repair Buffer                    843    8176.59
+  Inverter                                 76     285.27
+  Clock inverter                            5      53.80
+  Sequential cell                         397    8444.35
+  Multi-Input combinational cell         2372   24073.09
+  Total                                  4860   43878.33
+Writing OpenROAD database to '/home/Ven/vscode/VRAI/runs/RUN_2026-07-20_09-52-22/39-openroad-globalrouting/VRAI_SYNC_CORE.odb'…
+Writing layout to '/home/Ven/vscode/VRAI/runs/RUN_2026-07-20_09-52-22/39-openroad-globalrouting/VRAI_SYNC_CORE.def'…
