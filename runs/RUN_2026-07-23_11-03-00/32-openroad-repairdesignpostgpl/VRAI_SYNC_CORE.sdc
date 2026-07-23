@@ -1,0 +1,72 @@
+###############################################################################
+# Created by write_sdc
+###############################################################################
+current_design VRAI_SYNC_CORE
+###############################################################################
+# Timing Constraints
+###############################################################################
+create_clock -name CLK -period 26.0000 [get_ports {CLK}]
+###############################################################################
+# Environment
+###############################################################################
+set_load -pin_load 0.0500 [get_ports {DEVICES_LDH}]
+set_load -pin_load 0.0500 [get_ports {DEVICES_LDW}]
+set_load -pin_load 0.0500 [get_ports {DEVICES_STRH}]
+set_load -pin_load 0.0500 [get_ports {DEVICES_STRW}]
+set_load -pin_load 0.0500 [get_ports {EX_HALT}]
+set_load -pin_load 0.0500 [get_ports {INVALID_MEM}]
+set_load -pin_load 0.0500 [get_ports {MAIN_LDH}]
+set_load -pin_load 0.0500 [get_ports {MAIN_LDW}]
+set_load -pin_load 0.0500 [get_ports {MAIN_STRH}]
+set_load -pin_load 0.0500 [get_ports {MAIN_STRW}]
+set_load -pin_load 0.0500 [get_ports {INSTR_ADDR[15]}]
+set_load -pin_load 0.0500 [get_ports {INSTR_ADDR[14]}]
+set_load -pin_load 0.0500 [get_ports {INSTR_ADDR[13]}]
+set_load -pin_load 0.0500 [get_ports {INSTR_ADDR[12]}]
+set_load -pin_load 0.0500 [get_ports {INSTR_ADDR[11]}]
+set_load -pin_load 0.0500 [get_ports {INSTR_ADDR[10]}]
+set_load -pin_load 0.0500 [get_ports {INSTR_ADDR[9]}]
+set_load -pin_load 0.0500 [get_ports {INSTR_ADDR[8]}]
+set_load -pin_load 0.0500 [get_ports {INSTR_ADDR[7]}]
+set_load -pin_load 0.0500 [get_ports {INSTR_ADDR[6]}]
+set_load -pin_load 0.0500 [get_ports {INSTR_ADDR[5]}]
+set_load -pin_load 0.0500 [get_ports {INSTR_ADDR[4]}]
+set_load -pin_load 0.0500 [get_ports {INSTR_ADDR[3]}]
+set_load -pin_load 0.0500 [get_ports {INSTR_ADDR[2]}]
+set_load -pin_load 0.0500 [get_ports {INSTR_ADDR[1]}]
+set_load -pin_load 0.0500 [get_ports {INSTR_ADDR[0]}]
+set_load -pin_load 0.0500 [get_ports {MEM_ADDR[15]}]
+set_load -pin_load 0.0500 [get_ports {MEM_ADDR[14]}]
+set_load -pin_load 0.0500 [get_ports {MEM_ADDR[13]}]
+set_load -pin_load 0.0500 [get_ports {MEM_ADDR[12]}]
+set_load -pin_load 0.0500 [get_ports {MEM_ADDR[11]}]
+set_load -pin_load 0.0500 [get_ports {MEM_ADDR[10]}]
+set_load -pin_load 0.0500 [get_ports {MEM_ADDR[9]}]
+set_load -pin_load 0.0500 [get_ports {MEM_ADDR[8]}]
+set_load -pin_load 0.0500 [get_ports {MEM_ADDR[7]}]
+set_load -pin_load 0.0500 [get_ports {MEM_ADDR[6]}]
+set_load -pin_load 0.0500 [get_ports {MEM_ADDR[5]}]
+set_load -pin_load 0.0500 [get_ports {MEM_ADDR[4]}]
+set_load -pin_load 0.0500 [get_ports {MEM_ADDR[3]}]
+set_load -pin_load 0.0500 [get_ports {MEM_ADDR[2]}]
+set_load -pin_load 0.0500 [get_ports {MEM_ADDR[1]}]
+set_load -pin_load 0.0500 [get_ports {MEM_ADDR[0]}]
+set_load -pin_load 0.0500 [get_ports {MEM_STR_DATA[15]}]
+set_load -pin_load 0.0500 [get_ports {MEM_STR_DATA[14]}]
+set_load -pin_load 0.0500 [get_ports {MEM_STR_DATA[13]}]
+set_load -pin_load 0.0500 [get_ports {MEM_STR_DATA[12]}]
+set_load -pin_load 0.0500 [get_ports {MEM_STR_DATA[11]}]
+set_load -pin_load 0.0500 [get_ports {MEM_STR_DATA[10]}]
+set_load -pin_load 0.0500 [get_ports {MEM_STR_DATA[9]}]
+set_load -pin_load 0.0500 [get_ports {MEM_STR_DATA[8]}]
+set_load -pin_load 0.0500 [get_ports {MEM_STR_DATA[7]}]
+set_load -pin_load 0.0500 [get_ports {MEM_STR_DATA[6]}]
+set_load -pin_load 0.0500 [get_ports {MEM_STR_DATA[5]}]
+set_load -pin_load 0.0500 [get_ports {MEM_STR_DATA[4]}]
+set_load -pin_load 0.0500 [get_ports {MEM_STR_DATA[3]}]
+set_load -pin_load 0.0500 [get_ports {MEM_STR_DATA[2]}]
+set_load -pin_load 0.0500 [get_ports {MEM_STR_DATA[1]}]
+set_load -pin_load 0.0500 [get_ports {MEM_STR_DATA[0]}]
+###############################################################################
+# Design Rules
+###############################################################################
