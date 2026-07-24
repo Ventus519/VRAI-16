@@ -1,0 +1,200 @@
+
+===========================================================================
+report_checks -unconstrained
+===========================================================================
+======================= min_tt_025C_1v80 Corner ===================================
+
+Startpoint: RESET (input port clocked by CLK)
+Endpoint: _4924_ (rising edge-triggered flip-flop clocked by CLK)
+Path Group: CLK
+Path Type: max
+
+Fanout         Cap        Slew       Delay        Time   Description
+---------------------------------------------------------------------------------------------
+                                  0.000000    0.000000   clock CLK (rise edge)
+                                  0.000000    0.000000   clock network delay (propagated)
+                                  5.000000    5.000000 ^ input external delay
+     1    0.003345    0.000000    0.000000    5.000000 ^ RESET (in)
+                                                         RESET (net)
+                      0.000034    0.000017    5.000017 ^ input49/A (sky130_fd_sc_hd__buf_4)
+    16    0.126775    0.346382    0.309906    5.309923 ^ input49/X (sky130_fd_sc_hd__buf_4)
+                                                         net49 (net)
+                      0.346383    0.000481    5.310403 ^ _2433_/A (sky130_fd_sc_hd__clkinv_2)
+    40    0.154043    0.589992    0.561534    5.871937 v _2433_/Y (sky130_fd_sc_hd__clkinv_2)
+                                                         _2323_ (net)
+                      0.590372    0.012624    5.884561 v _2467_/B (sky130_fd_sc_hd__and2_2)
+     5    0.041376    0.118250    0.524835    6.409396 v _2467_/X (sky130_fd_sc_hd__and2_2)
+                                                         _0015_ (net)
+                      0.118253    0.000782    6.410178 v _2893_/B (sky130_fd_sc_hd__nand2_2)
+     5    0.015510    0.097011    0.134601    6.544779 ^ _2893_/Y (sky130_fd_sc_hd__nand2_2)
+                                                         _0725_ (net)
+                      0.097011    0.000277    6.545056 ^ _2985_/B (sky130_fd_sc_hd__or3b_2)
+     4    0.024093    0.143513    0.203580    6.748636 ^ _2985_/X (sky130_fd_sc_hd__or3b_2)
+                                                         _0769_ (net)
+                      0.143513    0.000346    6.748982 ^ _2986_/B (sky130_fd_sc_hd__nor2_2)
+     2    0.015374    0.057488    0.080088    6.829070 v _2986_/Y (sky130_fd_sc_hd__nor2_2)
+                                                         _0770_ (net)
+                      0.057488    0.000241    6.829310 v max_cap130/A (sky130_fd_sc_hd__clkbuf_8)
+    16    0.087750    0.100507    0.205342    7.034653 v max_cap130/X (sky130_fd_sc_hd__clkbuf_8)
+                                                         net130 (net)
+                      0.100546    0.001672    7.036325 v _2987_/B (sky130_fd_sc_hd__nor2_2)
+    16    0.091177    0.956993    0.744104    7.780429 ^ _2987_/Y (sky130_fd_sc_hd__nor2_2)
+                                                         _0771_ (net)
+                      0.957034    0.005328    7.785757 ^ _2997_/B1 (sky130_fd_sc_hd__a22o_2)
+     1    0.002014    0.052342    0.254063    8.039821 ^ _2997_/X (sky130_fd_sc_hd__a22o_2)
+                                                         _0076_ (net)
+                      0.052342    0.000018    8.039839 ^ _4924_/D (sky130_fd_sc_hd__dfxtp_2)
+                                              8.039839   data arrival time
+
+                                 26.000000   26.000000   clock CLK (rise edge)
+                                  0.000000   26.000000   clock source latency
+     1    0.047048    0.000000    0.000000   26.000000 ^ CLK (in)
+                                                         CLK (net)
+                      0.004057    0.002029   26.002028 ^ clkbuf_0_CLK/A (sky130_fd_sc_hd__clkbuf_16)
+     4    0.069881    0.087136    0.149065   26.151093 ^ clkbuf_0_CLK/X (sky130_fd_sc_hd__clkbuf_16)
+                                                         clknet_0_CLK (net)
+                      0.087218    0.001460   26.152554 ^ clkbuf_2_2__f_CLK/A (sky130_fd_sc_hd__clkbuf_16)
+     8    0.081765    0.098548    0.188198   26.340752 ^ clkbuf_2_2__f_CLK/X (sky130_fd_sc_hd__clkbuf_16)
+                                                         clknet_2_2__leaf_CLK (net)
+                      0.098561    0.001164   26.341915 ^ clkbuf_leaf_29_CLK/A (sky130_fd_sc_hd__clkbuf_8)
+    10    0.029870    0.066098    0.164112   26.506027 ^ clkbuf_leaf_29_CLK/X (sky130_fd_sc_hd__clkbuf_8)
+                                                         clknet_leaf_29_CLK (net)
+                      0.066103    0.000599   26.506626 ^ _4924_/CLK (sky130_fd_sc_hd__dfxtp_2)
+                                  0.000000   26.506626   clock reconvergence pessimism
+                                 -0.057464   26.449162   library setup time
+                                             26.449162   data required time
+---------------------------------------------------------------------------------------------
+                                             26.449162   data required time
+                                             -8.039839   data arrival time
+---------------------------------------------------------------------------------------------
+                                             18.409325   slack (MET)
+
+
+
+
+===========================================================================
+report_checks --slack_max -0.01
+============================================================================
+======================= min_tt_025C_1v80 Corner ===================================
+
+No paths found.
+
+
+===========================================================================
+ report_check_types -max_slew -max_cap -max_fanout -violators
+============================================================================
+======================= min_tt_025C_1v80 Corner ===================================
+
+
+
+===========================================================================
+report_parasitic_annotation -report_unannotated
+============================================================================
+Found 37 unannotated drivers.
+ clkload0/Y
+ clkload1/Y
+ clkload10/X
+ clkload11/X
+ clkload12/X
+ clkload13/X
+ clkload14/X
+ clkload15/X
+ clkload16/X
+ clkload17/Y
+ clkload18/X
+ clkload19/X
+ clkload2/Y
+ clkload20/X
+ clkload21/Y
+ clkload22/Y
+ clkload23/X
+ clkload24/Y
+ clkload25/Y
+ clkload26/Y
+ clkload27/X
+ clkload28/X
+ clkload29/Y
+ clkload3/X
+ clkload30/Y
+ clkload31/X
+ clkload32/X
+ clkload33/X
+ clkload34/Y
+ clkload35/X
+ clkload36/X
+ clkload4/X
+ clkload5/X
+ clkload6/X
+ clkload7/X
+ clkload8/X
+ clkload9/X
+Found 0 partially unannotated drivers.
+
+===========================================================================
+max slew violation count 0
+max fanout violation count 0
+max cap violation count 0
+============================================================================
+
+===========================================================================
+check_setup -verbose -unconstrained_endpoints -multiple_clock -no_clock -no_input_delay -loops -generated_clocks
+===========================================================================
+Warning: There are 58 unconstrained endpoints.
+  DEVICES_LDH
+  DEVICES_LDW
+  DEVICES_STRH
+  DEVICES_STRW
+  EX_HALT
+  INSTR_ADDR[0]
+  INSTR_ADDR[10]
+  INSTR_ADDR[11]
+  INSTR_ADDR[12]
+  INSTR_ADDR[13]
+  INSTR_ADDR[14]
+  INSTR_ADDR[15]
+  INSTR_ADDR[1]
+  INSTR_ADDR[2]
+  INSTR_ADDR[3]
+  INSTR_ADDR[4]
+  INSTR_ADDR[5]
+  INSTR_ADDR[6]
+  INSTR_ADDR[7]
+  INSTR_ADDR[8]
+  INSTR_ADDR[9]
+  INVALID_MEM
+  MAIN_LDH
+  MAIN_LDW
+  MAIN_STRH
+  MAIN_STRW
+  MEM_ADDR[0]
+  MEM_ADDR[10]
+  MEM_ADDR[11]
+  MEM_ADDR[12]
+  MEM_ADDR[13]
+  MEM_ADDR[14]
+  MEM_ADDR[15]
+  MEM_ADDR[1]
+  MEM_ADDR[2]
+  MEM_ADDR[3]
+  MEM_ADDR[4]
+  MEM_ADDR[5]
+  MEM_ADDR[6]
+  MEM_ADDR[7]
+  MEM_ADDR[8]
+  MEM_ADDR[9]
+  MEM_STR_DATA[0]
+  MEM_STR_DATA[10]
+  MEM_STR_DATA[11]
+  MEM_STR_DATA[12]
+  MEM_STR_DATA[13]
+  MEM_STR_DATA[14]
+  MEM_STR_DATA[15]
+  MEM_STR_DATA[1]
+  MEM_STR_DATA[2]
+  MEM_STR_DATA[3]
+  MEM_STR_DATA[4]
+  MEM_STR_DATA[5]
+  MEM_STR_DATA[6]
+  MEM_STR_DATA[7]
+  MEM_STR_DATA[8]
+  MEM_STR_DATA[9]

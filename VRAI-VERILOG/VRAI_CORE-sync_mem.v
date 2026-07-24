@@ -213,7 +213,7 @@ COUNTER counter (
     .RESET(RESET),
     
     .OVERWRITE(JMP_STREAM_COUNT), //see Unit 3: Jump
-    .OVERWRITE_VALUE(IMM + REG_JMP_INDIRECT),
+    .OVERWRITE_VALUE(JMP_DEST),
     
     .ENABLE(COUNTER_ENABLE),
 
@@ -275,7 +275,7 @@ assign SYS_RESULT = SYS_COUNT_RESULT;
 
 SWITCH sys_result_ctrl (
     .IN(RESULT_SYS),
-    .SW_EN(UNIT_SYS_EN),
+    .SW_EN(RESULT_SYS_EN),
     .OUT(SW_SYS_RESULT)
 );
 
@@ -307,7 +307,7 @@ wire [15:0] SW_ALU_RESULT;
 
 SWITCH alu_result_ctrl (
     .IN(RESULT_ALU),
-    .SW_EN(UNIT_ALU_EN),
+    .SW_EN(RESULT_ALU_EN),
     .OUT(SW_ALU_RESULT)
 );
 
@@ -398,7 +398,7 @@ wire [15:0] SW_MEM_RESULT;
 
 SWITCH mem_ld_data_ctrl (
     .IN(RESULT_MEM),
-    .SW_EN(MEM_LOAD),
+    .SW_EN(RESULT_MEM_EN),
     .OUT(SW_MEM_RESULT)
 );
 

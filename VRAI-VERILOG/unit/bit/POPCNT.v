@@ -33,7 +33,7 @@ endmodule
 module POPCNT_16
 (
     input wire [15:0] A,
-    output wire [5:0] COUNT
+    output wire [4:0] COUNT
 );
 
 wire [3:0] A_HI0, A_HI1, A_LO0, A_LO1;
@@ -43,23 +43,35 @@ assign A_HI1 = A[11:8];
 assign A_LO0 = A[3:0];
 assign A_LO1 = A[15:12];
 
-wire [2:0] COUNT_HI0, COUNT_HI1, COUNT_LO0, COUNT_LO1;
+wire [4:0] COUNT_HI0, COUNT_HI1, COUNT_LO0, COUNT_LO1;
+
+assign COUNT_HI0[4] = 0;
+assign COUNT_HI0[3] = 0;
+
+assign COUNT_HI1[4] = 0;
+assign COUNT_HI1[3] = 0;
+
+assign COUNT_LO0[4] = 0;
+assign COUNT_LO0[3] = 0;
+
+assign COUNT_LO1[4] = 0;
+assign COUNT_LO1[3] = 0;
 
 POPCNT_4 popcnt_hi0 (
     .A(A_HI0),
-    .COUNT(COUNT_HI0)
+    .COUNT(COUNT_HI0[2:0])
 );
 POPCNT_4 popcnt_hi1 (
     .A(A_HI1),
-    .COUNT(COUNT_HI1)
+    .COUNT(COUNT_HI1[2:0])
 );
 POPCNT_4 popcnt_lo0 (
     .A(A_LO0),
-    .COUNT(COUNT_LO0)
+    .COUNT(COUNT_LO0[2:0])
 );
 POPCNT_4 popcnt_lo1 (
     .A(A_LO1),
-    .COUNT(COUNT_LO1)
+    .COUNT(COUNT_LO1[2:0])
 );
 
 assign COUNT = COUNT_HI1 + COUNT_HI0 + COUNT_LO1 + COUNT_LO0;

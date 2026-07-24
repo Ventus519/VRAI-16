@@ -30,7 +30,7 @@ localparam [3:0]
 
 wire [4:0] CTZ_COUNT;
 wire [4:0] CLZ_COUNT;
-wire [5:0] POPCNT_COUNT;
+wire [4:0] POPCNT_COUNT;
 
 CTZ_16 ctz_unit (
     .A(A),
@@ -56,15 +56,15 @@ always @(*) begin
         XNOR: RESULT = ~(A ^ B);
         ROL: RESULT = (A << B[3:0]) | (A >> (16 - B[3:0]));
         ROR: RESULT = (A >> B[3:0]) | (A << (16 - B[3:0]));
-        CTZ: RESULT = CTZ_COUNT;
-        CLZ: RESULT = CLZ_COUNT;
+        CTZ: RESULT[4:0] = CTZ_COUNT;
+        CLZ: RESULT[4:0] = CLZ_COUNT;
         ANDI: RESULT = A & IMM;
         ORI: RESULT = A | IMM;
         NORI: RESULT = ~(A | IMM);
         XNORI: RESULT = ~(A ^ IMM);
         ROLI: RESULT = (A << IMM[3:0]) | (A >> (16 - IMM[3:0]));
         RORI: RESULT = (A >> IMM[3:0]) | (A << (16 - IMM[3:0]));
-        POPCNT: RESULT = POPCNT_COUNT;
+        POPCNT: RESULT[4:0] = POPCNT_COUNT;
         default: RESULT = 16'h0000; //DEFAULT TO ZERO FOR UNRECOGNIZED CODES
     endcase
 
