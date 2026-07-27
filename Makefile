@@ -1,6 +1,7 @@
 CC ?= gcc
 
 PROGRAM ?= program.vrai
+INPUT ?= memories/input.hex
 HEX_DUMP = $(PROGRAM:.vrai=.hex)
 
 ASSEMBLER_SOURCES := VRAI-ASSEMBLER/main.c \
@@ -51,7 +52,10 @@ $(VERILOG_TARGET): source.cmd
 .PHONY: run
 run: VRAI_SYNC_TEST.vcd
 
-VRAI_SYNC_TEST.vcd: program_alpha.hex $(VERILOG_TARGET)
+VRAI_SYNC_TEST.vcd: program_alpha.hex $(VERILOG_TARGET) memories/input.hex
+ifneq ($(INPUT), memories/input.hex)
+	cat $(INPUT) > memories/input.hex
+endif
 	vvp $(VERILOG_TARGET)
 
 
