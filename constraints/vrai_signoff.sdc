@@ -54,3 +54,5 @@ set_input_delay -clock CLK 5.0 [get_ports MEM_LD_DATA[1]]
 set_input_delay -clock CLK 5.0 [get_ports MEM_LD_DATA[0]]
 
 set_input_delay -clock CLK 5.0 [get_ports RESET]
+
+set_output_delay -clock CLK 5.0 [all_outputs]
