@@ -1,6 +1,6 @@
 CC ?= gcc
 
-PROGRAM ?= program.vrai
+PROGRAM ?= programs/program.vrai
 INPUT ?= memories/input.hex
 HEX_DUMP = $(PROGRAM:.vrai=.hex)
 
@@ -17,7 +17,7 @@ default: VRAIa $(VERILOG_TARGET)
 
 .PHONY: cleanup
 cleanup:
-	rm -r build
+	rm -rf build
 	rm -f program.vrai_preproc program_alpha.hex
 
 .PHONY: assembler
@@ -46,7 +46,7 @@ endif
 vcompile: $(VERILOG_TARGET)
 
 $(VERILOG_TARGET): source.cmd
-	mkdir build
+	mkdir -p build
 	iverilog -c source.cmd -o $(VERILOG_TARGET)
 
 .PHONY: run
