@@ -28,6 +28,13 @@ While VRAI wasn't originally intended for educational purposes, the structural
 clarity that arises from how responsibilities are separated in the processor may 
 be useful in educational settings.
 
+This document contains the information needed to understand testing with VRAI. More information on VRAI can be found in
+the following:
+- ISA: (in progress)
+- Proof-of-Concept Implementation: (in progress)
+- Verilog Implementation: (in progress)
+- Assembler Design: (in progress)
+
 ## Philosophy
 The following are the main philosophies behind the design of VRAI
 
@@ -74,6 +81,33 @@ Additionally, a C compiler is necessary to support assembling programs using the
 
 ### Make Targets
 
+VRAI comes with some default programs that can be used for testing. These programs are found under the "programs" 
+directory. VRAI also comes with custom input streams (found in the "memories/inputs" directory) corresponding to each 
+of these programs. While any of these inputs could be used for any VRAI program, it is recommended to use the program 
+with its corresponding input stream. 
+
+The following can be used to test the sorting program found in "programs/sorting.vrai":
+
+```
+make assembler
+make vcompile
+make assemble PROGRAM=programs/sorting.vrai
+make run INPUT=memories/input_sorting.hex
+```
+
+The above does every step needed for setting up the testing environment explicitly. Alternatively, the run target 
+could be used alone (given that the file "program_alpha.hex" does not exist).
+
+```
+make run PROGRAM=programs/sorting.vrai INPUT=memories/input_sorting.hex
+```
+
+The waveform can then be observed using
+```
+make wave
+```
+
+
 The following are the make targets that can be used:
 - default
 - cleanup
@@ -89,10 +123,10 @@ This target does not assemble a program, nor does it test any program to be seen
 
 The "cleanup" target is used to remove the build directory as well as any temporary files used by the assembler. 
 
-The "assembler" target compiles the assembler.
+The "assembler" target compiles the assembler. This target does not assemble any programs written in VRAI assembly. 
 
-The "assemble" target is used to assemble a program and output the hex representation of the finalized machine 
-instructions. The hex representation is then copied into the hex file "program_alpha.hex", which is used by the
+The "assemble" target is used to assemble a program and output the hex dump of the finalized machine 
+instructions. The hex dump is then copied into the hex file "program_alpha.hex", which is used by the
 Verilog testbench. A program should be provided for this target to work properly. If no program is provided, 
 make will attempt to use a file "program.vrai" in the "programs" directory. This file does not exist by default.
 
