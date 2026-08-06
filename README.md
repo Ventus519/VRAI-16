@@ -30,8 +30,9 @@ be useful in educational settings.
 
 This document contains the information needed to understand testing with VRAI. More information on VRAI can be found in
 the following:
-- ISA: (in progress)
-- Proof-of-Concept Implementation: (in progress)
+- [ISA](https://github.com/Ventus519/VRAI-16/VRAI-VERILOG/ISA.md): (in progress) Specification of how instructions are
+encoded. 
+- Proof-of-Concept Implementation: (in progress) Implementation using digital logic simulator "Turing Complete".
 - Verilog Implementation: (in progress)
 - Assembler Design: (in progress)
 
