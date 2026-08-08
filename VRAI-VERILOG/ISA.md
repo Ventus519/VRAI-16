@@ -1,6 +1,7 @@
 # ISA Specification
 
-The philosophy of this architecture is to outsource responsibilities to different units. Therefore, this architecture can be extended using additional execution units.
+The philosophy of this architecture is to outsource responsibilities to different units. Therefore, this architecture 
+can be extended using additional execution units.
 
 The four core units of this architecture are:
 - SYSTEM
