@@ -82,7 +82,19 @@ are the same, the implementation can be isolated from the selection of value.
 This block's implementation can be found below:
 ![ALU_CORE](images/unit/alu/ALU_CORE.png "VRAI-16 ALU CORE (TC)")
 
+The commented wires in the upper left are artifacts from during the implementation process. The comments are simply the 
+encoding specified in the main ISA document.
+
 ### Specifics about Comparison
+
+The CMP block handles the comparisons specified by the ISA (Signed Less Than \[S<\], Unsigned Less Than \[U<\],
+Equality \[EQ\]).
+
+The implementation of these comparisons is as follows:
+- EQ: \[indirect\] XOR bit checking (Check that the XOR of the two values is 0)
+- S<: U< with the MSB of both values swapped (A\[15\] <--> B\[15\])
+- U<: Less than by Induction (if the upper part of A is less than the upper part of B, then A < B. If equal, check the 
+lower parts)
 
 ## Components of UNIT BIT
 
