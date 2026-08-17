@@ -88,16 +88,26 @@ encoding specified in the main ISA document.
 ### Specifics about Comparison
 
 The CMP block handles the comparisons specified by the ISA (Signed Less Than \[S<\], Unsigned Less Than \[U<\],
-Equality \[EQ\]).
+Equality \[EQ\]). The following serves as a visual reference for the inside of the CMP block.
+
+![CMP_CORE](images/unit/alu/CMP.png "VRAI-16 CMP (TC)")
 
 The implementation of these comparisons is as follows:
-- EQ: \[indirect\] XOR bit checking (Check that the XOR of the two values is 0)
+- EQ: \[indirect\] XNOR bit checking (Check that the XNOR of the two values is -1)
 - S<: U< with the MSB of both values swapped (A\[15\] <--> B\[15\])
 - U<: Less than by Induction (if the upper part of A is less than the upper part of B, then A < B. If equal, check the 
 lower parts)
 
+The U< and EQ signals are determined using the SW L(short for SW_LOWEQ because it determines A LOW B and A EQ B using 
+"switches" \[which are similar to tri-state buffers\]) block. 
+
+The base component of the SW_LOWEQ (which determines comparisons between 2 1-bit inputs) can be seen below:
+![SW_LOWEQ_SOURCE](images/unit/alu/SW_LOWEQ/SW_LOWEQ-1.png "VRAI-16 LOWEQ COMPARISONS (TC)")
+
 ## Components of UNIT BIT
 
 ## Components of UNIT JMP
+Refer to the following image for the implementation of UNIT JMP
+![UNIT_JMP](images/unit/jmp/UNIT_JMP.png "VRAI-16 UNIT JMP")
 
 ## Components of UNIT MEM
