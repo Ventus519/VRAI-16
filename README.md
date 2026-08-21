@@ -32,7 +32,7 @@ This document contains the information needed to understand testing with VRAI. M
 the following:
 - [ISA](https://github.com/Ventus519/VRAI-16/blob/main/VRAI-VERILOG/ISA.md): (in progress) Specification of how instructions are
 encoded. 
-- Proof-of-Concept Implementation: (in progress) Implementation using digital logic simulator "Turing Complete".
+- [Proof-of-Concept Implementation](https://github.com/Ventus519/VRAI-16/blob/main/VRAI-proof_of_concept/PROOF_OF_CONCEPT.md): (in progress) Implementation using digital logic simulator "Turing Complete".
 - Verilog Implementation: (in progress)
 - Assembler Design: (in progress)
 

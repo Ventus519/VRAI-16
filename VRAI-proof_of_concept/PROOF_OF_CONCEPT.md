@@ -24,8 +24,13 @@ Refer to the main ISA document for specifics on the encoding scheme for each uni
 ![Core](images/core/sram-single_cycle/VRAI_CORE.png "VRAI Single-Cycle SRAM Core")
 
 The above image is the overall core design. Due to the size of the core, it may be difficult to identify where each 
-main part of the VRAI processor lies. For that reason, refer to the following map of the Core to understand where each 
+main part of the VRAI processor lies. For that reason, refer to the following maps of the Core to understand where each 
 unit lies and how they interact with the system. 
+
+### Unit Map
+![CORE_UNIT_MAP](images/core/maps/VRAI_CORE-UNIT_MAP.png "VRAI Core UNIT BOUNDARIES map")
+
+### Flow Map
 
 (need image of map)
 
@@ -105,6 +110,8 @@ The base component of the SW_LOWEQ (which determines comparisons between 2 1-bit
 ![SW_LOWEQ_SOURCE](images/unit/alu/SW_LOWEQ/SW_LOWEQ-1.png "VRAI-16 LOWEQ COMPARISONS (TC)")
 
 ## Components of UNIT BIT
+
+
 
 ## Components of UNIT JMP
 Refer to the following image for the implementation of UNIT JMP
