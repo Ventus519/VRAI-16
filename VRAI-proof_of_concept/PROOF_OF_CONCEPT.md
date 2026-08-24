@@ -111,6 +111,24 @@ The base component of the SW_LOWEQ (which determines comparisons between 2 1-bit
 
 ## Components of UNIT BIT
 
+### Overall Implementation
+The implementation of UNIT BIT can be referenced below:
+![UNIT_BIT](images/unit/bit/UNIT_BIT.png "VRAI-16 UNIT BIT (TC)")
+
+Since UNIT BIT is not completely symmetrical in its operations, two different versions of the BIT core were used. The 
+upper BIT CORE block uses the register representation of argument B while the lower block uses the immediate version. 
+The results of these are multiplexed using the highest bit of the code field. 
+
+The non-immediate B BIT Core (the upper one):
+![BIT_CORE_nIMM](images/unit/bit/BIT_CORE-nIMM.png "VRAI-16 BIT CORE nIMM (TC)")
+
+The immediate B BIT Core (the lower one):
+![BIT_CORE_IMM](images/unit/bit/BIT_CORE-IMM.png "VRAI-16 BIT CORE IMM (TC)")
+
+
+### Specifics about CLZ and CTZ
+
+## Specifics about POPCNT
 
 
 ## Components of UNIT JMP
