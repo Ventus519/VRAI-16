@@ -127,8 +127,35 @@ The immediate B BIT Core (the lower one):
 
 
 ### Specifics about CLZ and CTZ
+CTZ is implemented using a modified version of the CLZ implementation. This modification simply changes which bits are 
+prioritized in the count (as well as changing the base 2b block to be a CTZ block instead of a CLZ block). 
 
-## Specifics about POPCNT
+Internally, the intermediate stages of the CTZ/CLZ implementation use a 1-hot encoded scheme to represent how many 0's 
+were found from the prioritized section. The final stage converts the 1-hot encoded scheme into a binary value.
+
+The original expansion from the 2b CTZ into a 4b (1-hot encoded) CTZ is shown below:
+![CTZ_4](images/unit/bit/CLZ-CTZ/CTZ-4.png "VRAI-16 BIT CTZ-4")
+
+The CLZ version of this block is shown below:
+![CLZ_4](images/unit/bit/CLZ-CTZ/CLZ-4.png "VRAI-16 BIT CLZ-4") 
+
+As expected, the CTZ implementation places priority on the lowest bits of the value as opposed to the CLZ 
+implementation's priority placement on the highest bits of the value. 
+
+The base 2b CTZ block is shown below:
+![CTZ-2](images/unit/bit/CLZ-CTZ/CTZ-2.png "VRAI-16 BIT CTZ-2")
+
+The base 2b CLZ block is shown below:
+![CLZ_2](images/unit/bit/CLZ-CTZ/CLZ-2.png "VRAI-16 BIT CLZ-2")
+
+
+
+### Specifics about POPCNT
+The POPCNT implementation does addition using values generated from a 
+custom designed 4-bit popcount block. Refer to the following for this 
+4-bit popcount implementation:
+
+![BIT_POPCNT_4b](images/unit/bit/POPCNT/POPCNT-4.png "VRAI-16 BIT POPCNT 4b")
 
 
 ## Components of UNIT JMP
