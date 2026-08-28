@@ -49,6 +49,7 @@ enable signals of the "SUBCODE" decoders.
 
 
 The implementation of "CODE" decoder can be referenced below:
+
 ![UNIT_SYS](images/unit/sys/SYS_DECODER.png "VRAI-16 UNIT SYS (TC)")
 
 This implementation is functionally identical to a 4b-decoder (4-to-16 decoder) with an enable input.
@@ -76,6 +77,7 @@ exists outside of UNIT SYS, accessing the counter value for future use is done t
 
 ### Overall Implementation
 The implementation of UNIT ALU can be referenced below:
+
 ![UNIT_ALU](images/unit/alu/UNIT_ALU.png "VRAI-16 UNIT ALU (TC)")
 
 The highest bit of the code field is used to determine whether to use the register version of argument B or the 
@@ -85,6 +87,7 @@ The block "ALU CORE" is the main implementation of the ALU. Since the instructio
 are the same, the implementation can be isolated from the selection of value. 
 
 This block's implementation can be found below:
+
 ![ALU_CORE](images/unit/alu/ALU_CORE.png "VRAI-16 ALU CORE (TC)")
 
 The commented wires in the upper left are artifacts from during the implementation process. The comments are simply the 
@@ -107,12 +110,14 @@ The U< and EQ signals are determined using the SW L(short for SW_LOWEQ because i
 "switches" \[which are similar to tri-state buffers\]) block. 
 
 The base component of the SW_LOWEQ (which determines comparisons between 2 1-bit inputs) can be seen below:
+
 ![SW_LOWEQ_SOURCE](images/unit/alu/SW_LOWEQ/SW_LOWEQ-1.png "VRAI-16 LOWEQ COMPARISONS (TC)")
 
 ## Components of UNIT BIT
 
 ### Overall Implementation
 The implementation of UNIT BIT can be referenced below:
+
 ![UNIT_BIT](images/unit/bit/UNIT_BIT.png "VRAI-16 UNIT BIT (TC)")
 
 Since UNIT BIT is not completely symmetrical in its operations, two different versions of the BIT core were used. The 
@@ -120,9 +125,11 @@ upper BIT CORE block uses the register representation of argument B while the lo
 The results of these are multiplexed using the highest bit of the code field. 
 
 The non-immediate B BIT Core (the upper one):
+
 ![BIT_CORE_nIMM](images/unit/bit/BIT_CORE-nIMM.png "VRAI-16 BIT CORE nIMM (TC)")
 
 The immediate B BIT Core (the lower one):
+
 ![BIT_CORE_IMM](images/unit/bit/BIT_CORE-IMM.png "VRAI-16 BIT CORE IMM (TC)")
 
 
@@ -134,18 +141,22 @@ Internally, the intermediate stages of the CTZ/CLZ implementation use a 1-hot en
 were found from the prioritized section. The final stage converts the 1-hot encoded scheme into a binary value.
 
 The original expansion from the 2b CTZ into a 4b (1-hot encoded) CTZ is shown below:
+
 ![CTZ_4](images/unit/bit/CLZ-CTZ/CTZ-4.png "VRAI-16 BIT CTZ-4")
 
 The CLZ version of this block is shown below:
+
 ![CLZ_4](images/unit/bit/CLZ-CTZ/CLZ-4.png "VRAI-16 BIT CLZ-4") 
 
 As expected, the CTZ implementation places priority on the lowest bits of the value as opposed to the CLZ 
 implementation's priority placement on the highest bits of the value. 
 
 The base 2b CTZ block is shown below:
+
 ![CTZ-2](images/unit/bit/CLZ-CTZ/CTZ-2.png "VRAI-16 BIT CTZ-2")
 
 The base 2b CLZ block is shown below:
+
 ![CLZ_2](images/unit/bit/CLZ-CTZ/CLZ-2.png "VRAI-16 BIT CLZ-2")
 
 
@@ -160,6 +171,50 @@ custom designed 4-bit popcount block. Refer to the following for this
 
 ## Components of UNIT JMP
 Refer to the following image for the implementation of UNIT JMP
+
 ![UNIT_JMP](images/unit/jmp/UNIT_JMP.png "VRAI-16 UNIT JMP")
 
 ## Components of UNIT MEM
+
+UNIT MEM, the unit responsible for interfacing with memory, is divided into 3 sections:
+- Main Memory
+- Device Memory
+- Core Memory Controller
+
+### Specifics about the Core Memory Controller
+
+The implementation of the main core element of UNIT MEM is shown below:
+
+![UNIT_MEM_CORE](images/unit/mem/MEM_CORE.png "VRAI-16 UNIT MEM CORE")
+
+
+
+### Specifics about Main Memory
+
+The Main Memory region is shown below:
+
+![UNIT_MEM_MAIN](images/unit/mem/MEM_MAIN.png "Main Memory Region")
+
+### Specifics about Device Memory
+
+The Device Memory region can be referenced below:
+
+![UNIT_MEM_DEVICES](images/unit/mem/MEM_DEVICES.png "Device Memory Region")
+
+The Devices involved in the Turing Complete implementation of VRAI include:
+- VRAI std::in
+- VRAI std::out
+- VRAI std::key (unused, keyboard input)
+- VRAI std::time (unused, time in ns from unit epoch)
+
+The left most section of the Device Memory Region image referenced holds constant values 
+representing the address of specific parts of the designated device's region. Refer to the 
+main ISA documentation for information on where each device's designated memory space is. 
+
+The right most section of the referenced image is the location of the devices used in VRAI.
+This region also contains special logic involved in writing to each of the status/data/ctrl region 
+as needed after accessing the device. 
+
+The middle region is the pure memory space used to store this information. The uppermost portion uses 
+signals from the main memory controller for allowing the processor to store to and load from the requested 
+memory region. 
