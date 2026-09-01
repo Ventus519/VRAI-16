@@ -181,13 +181,27 @@ UNIT MEM, the unit responsible for interfacing with memory, is divided into 3 se
 - Device Memory
 - Core Memory Controller
 
+This unit is also expected to handle future memory-based optimizations including caches. Currently, such capabilities 
+are not described in the main ISA (and as such, are not implemented in this proof-of-concept). 
+
 ### Specifics about the Core Memory Controller
 
 The implementation of the main core element of UNIT MEM is shown below:
 
 ![UNIT_MEM_CORE](images/unit/mem/MEM_CORE.png "VRAI-16 UNIT MEM CORE")
 
+The shown implementation of the VRAI Memory Controller is used to decide which region of memory to retrieve/send data 
+from/to. This controller consists of mostly decoding logic, in addition to some circuitry to determine the address 
+to use when reading from the requested memory region. The decoding section consists of a 3b DISABLE decoder (3-to-8 with 
+disable input) for load instructions, as well as a 3b ENABLE decoder (3-to-8 decoder with enable input) for store 
+instructions. Most of the outputs of the decoders currently aren't used, but are still included in the circuit as they 
+are reserved for use by this memory controller.
 
+The base address is determined inside the ADDR block shown below:
+
+![UNIT_MEM_ADDR](images/unit/mem/ADDR.png "VRAI-16 UNIT MEM ADDR")
+Since both split memory regions can only be indexed up to 0x7FFF, the highest bit of the ADDR is used to determine the 
+region to send to. As such, this final bit is not included in the final address used by either of the memory regions.
 
 ### Specifics about Main Memory
 
