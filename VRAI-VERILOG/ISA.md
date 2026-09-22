@@ -27,19 +27,19 @@ The MEMORY unit handles memory access and Memory-Mapped IO.
 | Encoding | Alias | Function          | Notes                                                        |
 |----------|-------|-------------------|--------------------------------------------------------------|
 | 0x0      | zr    | Hardwired 0 value |                                                              |
-| 0x1      |       |                   |                                                              |
-| 0x2      |       |                   |                                                              |
-| 0x3      |       |                   |                                                              |
-| 0x4      |       |                   |                                                              |
-| 0x5      |       |                   |                                                              |
-| 0x6      |       |                   |                                                              |
-| 0x7      |       |                   |                                                              |
-| 0x8      |       |                   |                                                              |
-| 0x9      |       |                   |                                                              |
-| 0xA      |       |                   |                                                              |
-| 0xB      |       |                   |                                                              |
-| 0xC      |       |                   |                                                              |
-| 0xD      |       |                   |                                                              |
+| 0x1      | q1    | General Purpose   |                                                              |
+| 0x2      | q2    | General Purpose   |                                                              |
+| 0x3      | q3    | General Purpose   |                                                              |
+| 0x4      | q4    | General Purpose   |                                                              |
+| 0x5      | q5    | General Purpose   |                                                              |
+| 0x6      | q6    | General Purpose   |                                                              |
+| 0x7      | q7    | General Purpose   |                                                              |
+| 0x8      | q8    | General Purpose   |                                                              |
+| 0x9      | q9    | General Purpose   |                                                              |
+| 0xA      | q10   | General Purpose   |                                                              |
+| 0xB      | q11   | General Purpose   |                                                              |
+| 0xC      | q12   | General Purpose   |                                                              |
+| 0xD      | q13   | General Purpose   |                                                              |
 | 0xE      | sp    | Stack Pointer     |                                                              |
 | 0xF      | COND  | Condition FLAGS   | (Lowest 3 bits) Interpreted as Condition FLAGS by JUMP Unit. |
 
