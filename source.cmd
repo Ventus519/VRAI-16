@@ -21,6 +21,8 @@ VRAI-VERILOG/unit/alu/UNIT_ALU.v
 
 //UNIT 2: MEM
 VRAI-VERILOG/unit/mem/UNIT_MEM.v
+VRAI-VERILOG/unit/mem/UART.v
+
 
 //UNIT 3: JMP
 VRAI-VERILOG/unit/jmp/UNIT_JMP.v

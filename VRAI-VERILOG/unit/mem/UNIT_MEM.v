@@ -165,11 +165,29 @@ module DEVICE_SYNC_MEM (
 
     STD::IN - 0x8000 ~ 0x800F
     STD::OUT - 0x8010 ~ 0x801F
+    EXT::UART - 0x8040 ~ 0x804F
 
 */
 
+//CTRL REGIONS
+localparam STD_IN_CTRL_ADDR = 16'h0000,
+           STD_OUT_CTRL_ADDR = 16'h0010,
+           UART_CTRL_ADDR = 16'h0040;
+
+//STATUS REGIONS
+localparam STD_IN_STATUS_ADDR = 16'h0001,
+           STD_OUT_STATUS_ADDR = 16'h0010,
+           UART_STATUS_ADDR = 16'h0041;
+
+//INPUT DATA REGIONS
 localparam STD_IN_DATA_ADDR = 16'h0002,
-           STD_IN_EN_ADDR = 16'h0000;
+           UART_READ_DATA_ADDR = 16'h0044;
+
+//OUTPUT DATA REGIONS
+localparam STD_OUT_DATA_ADDR = 16'h0012,
+           UART_WRITE_DATA_ADDR = 16'h0042;
+
+
 
 reg [16:0] STD_IN_INDEX;
 
@@ -178,6 +196,30 @@ reg [7:0] MEM [0:32767];
 reg READ_STD_IN;
 
 reg [16:0] STD_IN [0:32767];
+
+wire [7:0] UART_STATUS;
+wire [7:0] UART_WRITE_DATA_OUT;
+wire [7:0] UART_READ_DATA_OUT;
+
+wire [7:0] UART_STORED_STATUS;
+wire [15:0] UART_STORED_READ_DATA;
+wire [15:0] UART_STORED_WRITE_DATA;
+
+assign UART_STORED_STATUS = MEM[UART_STATUS_ADDR];
+assign UART_STORED_READ_DATA = {MEM[UART_READ_DATA_ADDR], MEM[UART_READ_DATA_ADDR+1]};
+assign UART_STORED_WRITE_DATA = {MEM[UART_WRITE_DATA_ADDR], MEM[UART_WRITE_DATA_ADDR+1]};
+
+UART_8 uart_test (
+    .CLK(CLK),
+
+    .DATA_IN(UART_STORED_WRITE_DATA[7:0]),
+
+    .CTRL(MEM[UART_CTRL_ADDR]),
+
+    .WRITE_DATA_OUT(UART_WRITE_DATA_OUT),
+    .READ_DATA_OUT(UART_READ_DATA_OUT),
+    .STATUS(UART_STATUS)
+);
 
 initial begin
     $readmemh("memories/mem_device_init.hex", MEM);
@@ -188,9 +230,14 @@ end
 
 always @(posedge CLK) begin
     DATA_OUT <= 16'h0000;
+    MEM[UART_STATUS_ADDR] <= UART_STATUS;
+    MEM[UART_READ_DATA_ADDR] <= 8'h00;
+    MEM[UART_WRITE_DATA_ADDR] <= 8'h00;
+    MEM[UART_READ_DATA_ADDR+1] <= UART_READ_DATA_OUT;
+    MEM[UART_WRITE_DATA_ADDR+1] <= UART_WRITE_DATA_OUT;
     if (STRH) begin
         MEM[ADDR] <= DATA_IN[7:0];
-        if ((ADDR == STD_IN_EN_ADDR) && (DATA_IN != 8'h00)) begin
+        if ((ADDR == STD_IN_CTRL_ADDR) && (DATA_IN != 8'h00)) begin
 
             if (~READ_STD_IN) begin
                 MEM[STD_IN_DATA_ADDR] <= STD_IN[STD_IN_INDEX][15:8];
@@ -217,7 +264,11 @@ always @(posedge CLK) begin
         READ_STD_IN <= 0;
         DATA_OUT <= {MEM[ADDR], MEM[ADDR+1]};
     end
+
+
 end
+
+
 
 endmodule
 

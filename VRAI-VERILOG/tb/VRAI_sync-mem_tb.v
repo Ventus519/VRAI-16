@@ -1,4 +1,3 @@
-//This file is still in progress, nowhere near done
 
 `timescale 1ps/1ps
 module SYNC_INSTR_MEM (
@@ -138,10 +137,16 @@ always @(posedge CLK) begin
         count = 1;
         $display("STREAMING %x to OUT\n", MEM_STR_DATA);
     end
+    else if (DEVICES_STRW && (MEM_ADDR == 16'h8042)) begin
+        count = 1;
+        $display("STREAMING %x to OUT\n", MEM_STR_DATA);
+    end
+    else if (DEVICES_LDW && (MEM_ADDR == 16'h8044)) begin
+        count = 1;
+        $display("READING %x from IN\n", MEM_LD_DATA);
+    end
 end
 
-
-//no progress made on this portion
 initial begin
     $dumpfile("build/VRAI_SYNC_TEST.vcd");
     $dumpvars(0, VRAI_sync_tb);

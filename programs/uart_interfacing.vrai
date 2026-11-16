@@ -1,0 +1,143 @@
+const enable = q1
+const io_data = q13
+const io_status = q12
+const io_base = q10
+
+const space_found = q2
+const end_found = q3
+
+
+const io_status_mask = q11
+
+const in_ctrl = 0x8000
+const out_ctrl = 0x8010
+const uart_ctrl = 0x8040
+
+const enable_default = 0x0001
+
+
+;NOTES: (2026/11/04)
+;	- The str_h isntruction may need to be replaced with str_b 
+;	  depending on the version of the implementation
+;
+;	- This assumes that the uart region in device memory corresponds 
+;	  to addresses 0x8040 ~ 0x804F
+
+;EDIT: (2026/11/09)
+; 	- swapped the ordering of asserting the request signal and sending the output data.
+; 	- changed the UART read memory offset to +0x0004
+; 	- changed the bit specified in ctrl for the read operation (0x0001 --> 0x0002)
+
+
+;start of program execution
+
+
+movi enable, enable_default
+movi space_found, 0x0001
+movi end_found, 0x0000
+jmp MAIN
+
+;checks the status of the bits described by io_status_mask.
+;masked bits are assumed to signify the device is ready for the intended operation
+
+WAIT_IO_READY: 
+	ld_h io_status, [io_base+0x001] 
+	and io_status, io_status, io_status_mask ;
+	cmp io_status, zr
+	je WAIT_IO_READY ;#1C
+	ret
+
+IN:
+	movi io_base, in_ctrl
+	movi io_status_mask, 0x0001
+	call WAIT_IO_READY
+
+	str_h [io_base+0x0000], enable
+	ld_w io_data, [io_base+0x0002]
+	str_h [io_base+0x0000], zr
+
+	ret
+
+OUT:
+	movi io_base, out_ctrl
+	movi io_status_mask, 0x0001
+	call WAIT_IO_READY
+
+	str_w [io_base+0x0002], io_data
+	str_h [io_base+0x0000], enable
+	str_h [io_base+0x0000], zr
+	ret
+
+UART_WRITE:
+	movi io_base, uart_ctrl
+	movi io_status_mask, 0x0001 ;sasumes bit 0 indicates whether the value can be sent to device
+	call WAIT_IO_READY
+
+	str_w [io_base+0x0002], io_data ;write data region offset
+	str_h [io_base+0x0000], enable
+	str_h [io_base+0x0000], zr
+	ret
+
+UART_READ:
+	movi io_base, uart_ctrl
+	movi io_status_mask, 0x0002 ;assumes bit 1 indicates whether the value can be read from memory
+	
+	;actually specify the operation being performed instead 
+	;of just checking if its possible and then using the write operation anyways
+	mov enable, io_status_mask 
+
+	call WAIT_IO_READY
+
+	ld_w io_data, [io_base+0x0004] 
+	str_h [io_base+0x0000], enable ;acknowledge the reading of the data
+	str_h [io_base+0x0000], zr
+
+	movi enable, enable_default
+	ret
+
+MAIN:
+;simple program to capitalize the first character of each word from uart input
+;only capitalizes the first character if the 'word' starts with an alphabetic value
+
+;assumes ascii encoding of characters
+
+UART_READ_CHAR:
+	cmpi end_found, 0x0000
+	jne HALT_EX
+
+	call UART_READ
+
+	cmpi space_found, 0x0001
+	jne CHECK_IF_SPACE
+	cmpi io_data, 0x0061 ;cmp io_data, 'a'
+	jl CHECK_IF_SPACE
+	cmpi io_data, 0x007A ;cmp io_data, 'z'
+	jg CHECK_IF_SPACE
+
+CAPITALIZE:
+	;capital characters = lowercase - 0x0020
+	subi io_data, io_data, 0x0020
+	movi space_found, 0x0000
+
+CHECK_IF_SPACE:
+	cmpi io_data, 0x0020 ;cmpi io_data, ' '
+	je FOUND_SPACE
+	cmpi io_data, 0x000A; cmpi io_data, '\n'
+	je FOUND_SPACE
+	cmpi io_data, 0x0000; cmpi io_data, '\0'
+	je FOUND_END
+	jmp UART_OUT_CHAR
+
+
+FOUND_END:
+	movi end_found, 0x0001
+
+FOUND_SPACE:
+	movi space_found, 0x0001
+
+UART_OUT_CHAR:
+	call UART_WRITE
+	jmp UART_READ_CHAR
+
+HALT_EX:
+	HALT

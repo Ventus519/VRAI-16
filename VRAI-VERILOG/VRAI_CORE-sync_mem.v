@@ -77,7 +77,7 @@ wire [3:0] REG_B_BIT;
 wire [15:0] IMM;
 
 INSTR_DECODER instr_decoder (
-    .INSTR(INSTR), //INSTR is not implemented yet
+    .INSTR(INSTR),
     .UNIT_CODE(UNIT_CODE),
     .MAIN_CODE(MAIN_CODE),
 
@@ -426,14 +426,14 @@ UNIT_BIT bit_unit (
 wire [15:0] SW_BIT_RESULT;
 SWITCH bit_result_ctrl (
     .IN(RESULT_BIT),
-    .SW_EN(UNIT_BIT_EN),
+    .SW_EN(RESULT_BIT_EN),
     .OUT(SW_BIT_RESULT)
 );
 
 wire [3:0] SW_BIT_DEST;
 SWITCH #(4) bit_dest_ctrl (
     .IN(REG_DEST_BIT),
-    .SW_EN(RESULT_BIT_EN),
+    .SW_EN(UNIT_BIT_EN),
     .OUT(SW_BIT_DEST)
 );
 
