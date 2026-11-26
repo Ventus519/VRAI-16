@@ -468,7 +468,8 @@ localparam STATE_COUNTER_UPDATE = 0,
            STATE_EXECUTE = 3,
            STATE_MEM = 4,
            STATE_STREAM = 5,
-           STATE_INVALID = 6;
+           STATE_INVALID = 6,
+           STATE_HALT = 7;
 
 reg [2:0] STATE;
 
@@ -476,6 +477,7 @@ reg [2:0] STATE;
 
 
 localparam INSTR_NOP = 32'h0000_0000;
+localparam INSTR_HALT = 32'h000F_0000;
 //RESET to default state
 integer i;
 always @(posedge CLK) begin
@@ -524,7 +526,7 @@ always @(posedge CLK) begin
             STATE_EXECUTE: begin
                 if (UNIT_INVALID | INVALID_MEM | SYS_INVALID) begin
                     STATE <= STATE_INVALID;
-                    INSTR <= INSTR_NOP;
+                    INSTR <= INSTR_HALT;
                 end else begin
                     STREAM_WRITE_DEST <= WRITE_DEST;
                     LOAD <= MEM_LOAD;
@@ -567,26 +569,76 @@ always @(posedge CLK) begin
 
                 if (SYS_HALT) begin
                     HALT_EX <= 1;
+                    STATE <= STATE_HALT;
+                end else begin
+                    STATE <= STATE_COUNTER_UPDATE;
                 end
-
-                STATE <= STATE_COUNTER_UPDATE;
                 STALL_EX <= 0;
 
             end
             STATE_INVALID: begin
                 STATE <= STATE_INVALID;
-                INSTR <= INSTR_NOP;
+                INSTR <= INSTR_HALT;
+                HALT_EX <= 1;
+            end
+            STATE_HALT: begin
+                STATE <= STATE_HALT;
+                INSTR <= INSTR_HALT;
                 HALT_EX <= 1;
             end
             default: begin
                 STATE <= STATE_INVALID;
-                INSTR <= INSTR_NOP;
+                INSTR <= INSTR_HALT;
             end
         endcase
     end
 end
 
-//Normal Execution
+//Formal Verification
+
+`ifdef FORMAL
+    reg f_past_valid = 1'b0;
+
+    always @(posedge CLK) begin
+        f_past_valid <= 1'b1; //used to ensure $past makes sense
+        if (f_past_valid && !RESET && !$past(RESET)) begin
+            //check assertions
+            assert(REG_ZR == 16'h0000);
+
+            if ($past(STATE) == STATE_INVALID) begin
+                assert(STATE == STATE_INVALID);
+            end
+            
+            if (EX_HALT) begin
+                assert(SYS_HALT);
+            end else begin
+                //not halted and not reset
+                cover(RESULT_ALU_EN);
+                cover(RESULT_SYS_EN);
+                cover(RESULT_BIT_EN);
+                cover(RESULT_MEM_EN);
+                cover(JMP_STREAM_COUNT); //conditional jumps can take place
+                cover(LOAD);
+                
+
+                cover(STATE == STATE_COUNTER_UPDATE);
+                cover(STATE == STATE_FETCH_REQ);
+                cover(STATE == STATE_FETCH_END);
+                cover(STATE == STATE_EXECUTE);
+                cover(STATE == STATE_STREAM);
+                cover(STATE == STATE_MEM);
+
+
+                
+                cover(STATE == STATE_INVALID);
+                cover(INVALID_MEM);
+            end
+
+            
+            
+        end
+    end
+`endif
 
 
 

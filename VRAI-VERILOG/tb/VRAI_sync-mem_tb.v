@@ -20,6 +20,7 @@ end
 
 endmodule
 
+//actual testbench
 module VRAI_sync_tb ();
 reg CLK;
 reg RESET;

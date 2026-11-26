@@ -234,7 +234,6 @@ always @(posedge CLK) begin
     MEM[UART_READ_DATA_ADDR] <= 8'h00;
     MEM[UART_WRITE_DATA_ADDR] <= 8'h00;
     MEM[UART_READ_DATA_ADDR+1] <= UART_READ_DATA_OUT;
-    MEM[UART_WRITE_DATA_ADDR+1] <= UART_WRITE_DATA_OUT;
     if (STRH) begin
         MEM[ADDR] <= DATA_IN[7:0];
         if ((ADDR == STD_IN_CTRL_ADDR) && (DATA_IN != 8'h00)) begin

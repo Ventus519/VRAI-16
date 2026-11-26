@@ -1,0 +1,49 @@
+[tasks]
+prove
+cover
+
+[options]
+prove: mode prove
+prove: depth 15
+
+cover: mode cover
+cover: depth 25
+
+[engines]
+smtbmc yices
+
+[script]
+read -formal \
+        COUNTER.v \
+        INSTR_DECODER.v \
+        UNIT_DECODER.v \
+        SWITCH.v \
+        UNIT_SYS.v \
+        UNIT_ALU.v \
+        UNIT_JMP.v \
+        UNIT_MEM.v \
+        UNIT_BIT.v \
+        CLZ.v \
+        CTZ.v \
+        POPCNT.v \
+        VRAI_CORE-sync_mem.v \
+        formal_top.v
+prep -top formal_top
+
+[files]
+VRAI-VERILOG/COUNTER.v
+VRAI-VERILOG/decode/INSTR_DECODER.v
+VRAI-VERILOG/decode/UNIT_DECODER.v
+VRAI-VERILOG/unit/SWITCH.v
+VRAI-VERILOG/unit/sys/UNIT_SYS.v
+VRAI-VERILOG/unit/alu/UNIT_ALU.v
+VRAI-VERILOG/unit/mem/UNIT_MEM.v
+VRAI-VERILOG/unit/jmp/UNIT_JMP.v
+VRAI-VERILOG/unit/bit/UNIT_BIT.v
+VRAI-VERILOG/unit/bit/CLZ.v
+VRAI-VERILOG/unit/bit/CTZ.v
+VRAI-VERILOG/unit/bit/POPCNT.v
+VRAI-VERILOG/VRAI_CORE-sync_mem.v
+VRAI-VERILOG/formal/formal_top.v
+
+

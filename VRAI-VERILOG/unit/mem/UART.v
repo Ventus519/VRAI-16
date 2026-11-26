@@ -39,6 +39,9 @@ assign WRITE_DATA_OUT = WRITE_DATA;
 always @(posedge CLK) begin
 
     if (ARTIFICIAL_READ_WAIT == 16'hFFFF) begin
+        if (~UART_STATUS[1]) begin
+            UART_STATUS[1] <= 1;
+        end
         UART_STATUS[1] <= 1;
         HELD_DATA <= ARTIFICIAL_INPUT_DATA[READ_INDEX];
     end else begin
@@ -47,7 +50,9 @@ always @(posedge CLK) begin
     end
 
     if (ARTIFICIAL_WRITE_WAIT == 16'hFFFF) begin
-        UART_STATUS[0] <= 1;
+        if (~UART_STATUS[0]) begin
+            UART_STATUS[0] <= 1;
+        end
         WRITE_DATA <= WRITE_DATA_HOLD;
     end else begin
         ARTIFICIAL_WRITE_WAIT <= ARTIFICIAL_WRITE_WAIT + 1;
@@ -60,16 +65,18 @@ always @(posedge CLK) begin
         if (UART_STATUS[0]) begin
             ARTIFICIAL_WRITE_WAIT <= 16'h0000;
             WRITE_DATA_HOLD <= DATA_IN;
+            UART_STATUS[0] <= 0;
         end
-        UART_STATUS[0] <= 0;
+
     end
     if (CTRL[1]) begin 
         //acknowledge the read
         if (UART_STATUS[1]) begin
             ARTIFICIAL_READ_WAIT <= 16'h0000;
             READ_INDEX <= READ_INDEX + 1;
+            UART_STATUS[1] <= 0;
         end
-        UART_STATUS[1] <= 0;
+
     end
         
 end
